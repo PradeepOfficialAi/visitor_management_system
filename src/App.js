@@ -71,7 +71,7 @@ function App() {
   };
 
   return isAuthenticated ? (
-    <div style={{ backgroundColor: "#f4f4f4" }}>
+    <div className="bg-primary-dark">
       <div className="flex h-screen">
         {userType !== 'Guard' && <Sidebar />}
         <div className="flex-1 flex flex-col">

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Dialog, DialogTitle } from '@mui/material';
+import localStorageManager from "../../utils/localStorageManager";
 import Notification from "../../components/notification";
-import { url } from "../../utils/Constants";
+
 import CameraModal from "../../components/camera";
 import SignatureCapture from "../../components/SignatureCapture/SignatureCapture";
 
@@ -98,36 +99,25 @@ const AddNewUser = ({ open, onClose, fetchData }) => {
     setErrors({ ...errors, [name]: null }); // Clear errors
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (!validate()) return;
     try {
       userData.image = imageData;
       userData.signature = signatureData;
-      const response = await fetch(`${url}/accounts/create-users/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(userData),
-      });
 
-      if (response.ok) {
-        Notification.showSuccessMessage("Success", "User Added Successfully");
-        fetchData();
-        setUserData(initialValues);
-        handleClose();
-      } else {
-        const json = await response.json();
-        let message = ""
-        Object.values(json).forEach(value => {
-          console.log(value); // prints value
-          message = message + value[0] + "\n"
-        });
-        Notification.showErrorMessage("Error", message);
-      }
+      const existingUsers = localStorageManager.getUsers();
+      const newUserId = existingUsers.length > 0 ? Math.max(...existingUsers.map(u => u.id)) + 1 : 1;
+      const newUser = { ...userData, id: newUserId };
+
+      localStorageManager.addUser(newUser);
+
+      Notification.showSuccessMessage("Success", "User Added Successfully");
+      fetchData(); // This prop will be passed from Users.jsx to refresh the list
+      setUserData(initialValues);
+      handleClose();
     } catch (error) {
-      Notification.showErrorMessage("Error", "Server error");
+      Notification.showErrorMessage("Error", "Failed to add user locally.");
+      console.error("Error adding user to local storage:", error);
     }
   };
 

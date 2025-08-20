@@ -4,8 +4,9 @@ module.exports = {
     theme: {
       extend: {
         colors: {
-          customGreen: '#40664F',
-          customFieldGreen: '#58866A'
+          'primary-dark': '#1a1a1a',
+          'secondary-dark': '#2c2c2c',
+          'accent-blue': '#00bfff',
         }
       },
     },

@@ -23,13 +23,15 @@ import AddIcon from "@mui/icons-material/Add";
 import Alert from "../../components/alert/index.jsx";
 import Pagination from "../../components/pagination/index.jsx";
 import localStorageManager from "../../utils/localStorageManager.js";
+import AddNewUser from "./AddNewUser.jsx";
 
-const Users = ({ users, isLoading, onActionClick }) => {
+const Users = ({ onActionClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [currentSelectedUser, setCurrentSelectedUser] = useState(null);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [allUsers, setAllUsers] = useState([]); // State to hold all users from localStorage
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
@@ -38,13 +40,26 @@ const Users = ({ users, isLoading, onActionClick }) => {
   const [updateUserData, setUpdateUserData] = useState({ id: null, username: "", first_name: "", last_name: "", user_type: "" });
 
   useEffect(() => {
-    const filtered = users?.filter(
-      (user) =>
-        user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchTerm.toLowerCase())
+    localStorageManager.initializeDB();
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = () => {
+    const usersFromLocalStorage = localStorageManager.getUsers();
+    setAllUsers(usersFromLocalStorage);
+  };
+
+  useEffect(() => {
+    const filtered = allUsers?.filter(
+      (user) => {
+        const usernameMatch = user.username && user.username.toLowerCase().includes(searchTerm.toLowerCase());
+        const nameMatch = (user.first_name && user.first_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                          (user.last_name && user.last_name.toLowerCase().includes(searchTerm.toLowerCase()));
+        return usernameMatch || nameMatch;
+      }
     );
     setFilteredUsers(filtered);
-  }, [searchTerm, users]);
+  }, [searchTerm, allUsers]);
 
   const handleSearchChange = (event) => {
     const value = event.target.value;
@@ -104,7 +119,7 @@ const Users = ({ users, isLoading, onActionClick }) => {
       <div className="flex justify-between items-center m-6">
         <div className="flex items-center space-x-2">
           <input
-            className="appearance-none border border-customGreen rounded-3xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-700"
+            className="appearance-none border border-gray-700 rounded-3xl w-full py-2 px-3 bg-secondary-dark text-white leading-tight focus:outline-none focus:ring-2 focus:ring-accent-blue"
             type="text"
             placeholder="Search UserName/Name"
             value={searchTerm}
@@ -113,7 +128,7 @@ const Users = ({ users, isLoading, onActionClick }) => {
           <select
             value={itemsPerPage}
             onChange={handlePageSizeChange}
-            className="border border-customGreen rounded-3xl bg-white py-2 px-3 text-gray-700 focus:outline-none"
+            className="border border-gray-700 rounded-3xl bg-secondary-dark py-2 px-3 text-white focus:outline-none"
           >
             {[5, 10, 20, 30, 50].map((size) => (
               <option key={size} value={size}>
@@ -123,61 +138,61 @@ const Users = ({ users, isLoading, onActionClick }) => {
           </select>
         </div>
         <button
-          className="flex items-center bg-customGreen hover:bg-green-700 text-white py-1 px-4 rounded-3xl"
+          className="flex items-center bg-accent-blue hover:bg-blue-700 text-white py-1 px-4 rounded-3xl"
           onClick={() => setAddUserModalOpen(true)}
         >
           <AddIcon className="h-4 w-5 mr-2" />
           ADD NEW
         </button>
       </div>
-      {isLoading ? (
+      {allUsers.length === 0 ? (
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
           <CircularProgress />
         </Box>
       ) : currentUsers?.length > 0 ? (
-        <div className="bg-white shadow-md rounded my-6">
+        <div className="bg-secondary-dark shadow-md rounded my-6">
           <table className="text-left w-full border-collapse">
             <thead>
               <tr>
-                <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light text-center">
+                <th className="py-4 px-6 bg-primary-dark font-bold uppercase text-sm text-white border-b border-gray-700 text-center">
                   User Image
                 </th>
-                <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                <th className="py-4 px-6 bg-primary-dark font-bold uppercase text-sm text-white border-b border-gray-700">
                   User Name
                 </th>
-                <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                <th className="py-4 px-6 bg-primary-dark font-bold uppercase text-sm text-white border-b border-gray-700">
                   Name
                 </th>
-                <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                <th className="py-4 px-6 bg-primary-dark font-bold uppercase text-sm text-white border-b border-gray-700">
                   User Type
                 </th>
-                <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
+                <th className="py-4 px-6 bg-primary-dark font-bold uppercase text-sm text-white border-b border-gray-700">
                   Action
                 </th>
               </tr>
             </thead>
             <tbody>
               {currentUsers?.map((user, index) => (
-                <tr key={index} className="hover:bg-grey-lighter">
-                  <td className="py-1 px-1 border-b border-grey-light">
+                <tr key={index} className="hover:bg-primary-dark">
+                  <td className="py-1 px-1 border-b border-gray-700 text-white">
                     <div className="flex justify-center">
-                      <div className="inline-block h-16 w-16 border-2 border-gray-300 rounded-full overflow-hidden bg-customGreen">
+                      <div className="inline-block h-16 w-16 border-2 border-gray-300 rounded-full overflow-hidden bg-accent-blue">
                         {user.image ? (
                           <img src={`data:image/jpeg;base64,${user.image}`} alt="User" />
                         ) : (
-                          <div className="h-full w-full flex items-center justify-center text-white bg-customGreen">
+                          <div className="h-full w-full flex items-center justify-center text-white bg-accent-blue">
                             {user.username ? user.username.charAt(0).toUpperCase() : "N"}
                           </div>
                         )}
                       </div>
                     </div>
                   </td>
-                  <td className="py-4 px-6 border-b border-grey-light">{user.username}</td>
-                  <td className="py-4 px-6 border-b border-grey-light">
+                  <td className="py-4 px-6 border-b border-gray-700 text-white">{user.username}</td>
+                  <td className="py-4 px-6 border-b border-gray-700 text-white">
                     {user.first_name} {user.last_name}
                   </td>
-                  <td className="py-4 px-6 border-b border-grey-light">{user.user_type}</td>
-                  <td className="py-4 px-6 border-b border-grey-light">
+                  <td className="py-4 px-6 border-b border-gray-700 text-white">{user.user_type}</td>
+                  <td className="py-4 px-6 border-b border-gray-700 text-white">
                     <IconButton
                       aria-label="more"
                       aria-controls="long-menu"
@@ -239,48 +254,11 @@ const Users = ({ users, isLoading, onActionClick }) => {
         buttonColor="red"
         onButtonClick={confirmDelete}
       />
-      <Dialog open={addUserModalOpen} onClose={() => setAddUserModalOpen(false)}>
-        <DialogTitle>Add New User</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Username"
-            type="text"
-            fullWidth
-            value={newUserData.username}
-            onChange={(e) => setNewUserData({ ...newUserData, username: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="First Name"
-            type="text"
-            fullWidth
-            value={newUserData.first_name}
-            onChange={(e) => setNewUserData({ ...newUserData, first_name: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="Last Name"
-            type="text"
-            fullWidth
-            value={newUserData.last_name}
-            onChange={(e) => setNewUserData({ ...newUserData, last_name: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="User Type"
-            type="text"
-            fullWidth
-            value={newUserData.user_type}
-            onChange={(e) => setNewUserData({ ...newUserData, user_type: e.target.value })}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setAddUserModalOpen(false)}>Cancel</Button>
-          <Button onClick={handleAddUser}>Add</Button>
-        </DialogActions>
-      </Dialog>
+      <AddNewUser
+        open={addUserModalOpen}
+        onClose={() => setAddUserModalOpen(false)}
+        fetchData={fetchUsers}
+      />
       <Dialog open={updateUserModalOpen} onClose={() => setUpdateUserModalOpen(false)}>
         <DialogTitle>Update User</DialogTitle>
         <DialogContent>

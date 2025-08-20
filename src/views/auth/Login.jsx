@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext.jsx";
 import Notification from "../../components/notification";
-import modlogo from "../../assets/images/web-logo.png";
-import footerwave from "../../assets/images/footer-wave.png";
+
+
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Loading from "../../components/loading";
 import userData from "../../utils/data/userData.js";
@@ -59,26 +59,21 @@ const Login = () => {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen bg-customGreen w-full">
-      {/* <form className="p-8 min-w-[440px] border border-gray-300 rounded-lg shadow-md" onSubmit={handleSubmit} > */}
-      <form className="p-8 min-w-[440px] rounded-lg" style={{ 'border': "1px solid #567763", "boxShadow": "rgba(0, 0, 0, 0.24) 0px 3px 8px" }} onSubmit={handleSubmit} >
-        <div className="flex justify-center mb-1">
-          <img src={modlogo} alt="Ministry of Defence" className="h-26" />
-        </div>
+    <div className="flex items-center justify-center h-screen bg-primary-dark w-full">
+      <form className="p-8 min-w-[440px] rounded-lg shadow-lg bg-secondary-dark" onSubmit={handleSubmit} >
+        
         <div className="flex justify-center mb-1 text-white text-lg md:text-xl">
-          {/* Ministry Of Defence, India */}
           Visitor Management System
         </div>
         <div className="flex justify-center mb-4 text-white text-lg md:text-xl">
-          {/* रक्षा मंत्रालय, भारत */}
-          विज़िटर प्रबंधन प्रणाली
+          
         </div>
         <div className="mb-4">
           <label htmlFor="username" className="sr-only">Username</label>
           <input
             type="text"
             id="username"
-            className="w-full p-2 rounded-lg bg-customFieldGreen text-white"
+            className="w-full p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-blue"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -89,7 +84,7 @@ const Login = () => {
           <input
             type={showPassword ? "text" : "password"}
             id="password"
-            className="w-full p-2 rounded-lg bg-customFieldGreen text-white pr-10"
+            className="w-full p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-blue pr-10"
             value={password}
             placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
@@ -103,14 +98,10 @@ const Login = () => {
           </button>
         </div>
 
-        {/* <button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-lg"> */}
-        <button type="submit" className="w-full text-white p-2 rounded-lg" style={{ backgroundColor: "rgb(15 70 37)" }}>
+        <button type="submit" className="w-full bg-accent-blue hover:bg-blue-700 text-white p-3 rounded-lg font-semibold transition duration-300">
           Login
         </button>
       </form>
-      <div className="absolute bottom-0 left-0 right-0">
-        <img src={footerwave} alt="Wave" className="w-full" />
-      </div>
     </div>
   );
 };

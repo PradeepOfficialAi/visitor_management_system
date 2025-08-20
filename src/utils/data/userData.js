@@ -1,10 +1,10 @@
 const userData = [
   {
     id: 1,
-    user_name: "shah",
+    user_name: "nithya",
     password: "nithya123",
-    firstName: "Mr",
-    lastName: "Shah",
+    firstName: "Mrs",
+    lastName: "Nithya",
     user_type: "admin",
     phoneNumber: "9817730229",
     address: "New Delhi",
@@ -22,10 +22,10 @@ const userData = [
   },
   {
     id: 2,
-    user_name: "sanjeev",
-    password: "sanjeev123",
-    firstName: "sanjeev",
-    lastName: "singh",
+    user_name: "anisha",
+    password: "anisha123",
+    firstName: "Anisha",
+    lastName: "Anisha",
     user_type: "admin",
     phoneNumber: "9506009121",
     address: "New Delhi",

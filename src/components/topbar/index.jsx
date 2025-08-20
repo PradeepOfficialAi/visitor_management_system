@@ -29,19 +29,18 @@ const Topbar = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center bg-gray-100 p-4 shadow-md">
-        {/* <img src={essilogo} alt="MOD Logo" className="h-12" /> */}
-        <div class="h-full flex items-center font-bold text-xl">
+      <div className="flex justify-between items-center bg-secondary-dark p-4 shadow-md">
+        <div class="h-full flex items-center font-bold text-xl text-white">
           VISITOR MANAGEMENT SYSTEM
         </div>
 
         {localStorage.getItem("token") && (
           <div className="flex items-center space-x-2">
             <div
-              className="flex items-center space-x-2 bg-customGreen rounded-full p-1 transform scale-90 shadow-md min-w-[130px]"
+              className="flex items-center space-x-2 bg-primary-dark rounded-full p-1 transform scale-90 shadow-md min-w-[130px]"
               onClick={() => setProfileModalOpen(true)}
             >
-              <div className="w-8 h-8 border-2 border-gray-300 rounded-full overflow-hidden bg-customGreen flex justify-center items-center">
+              <div className="w-8 h-8 border-2 border-gray-300 rounded-full overflow-hidden bg-accent-blue flex justify-center items-center">
                 {userimage != "null" ? (
                   <img
                     src={`data:image/jpeg;base64,${localStorage.getItem(
@@ -60,7 +59,7 @@ const Topbar = () => {
             </div>
 
             <button
-              className="bg-customGreen hover:bg-green-700 text-white py-2 px-4 rounded-3xl shadow-md flex items-center text-sm"
+              className="bg-accent-blue hover:bg-blue-700 text-white py-2 px-4 rounded-3xl shadow-md flex items-center text-sm"
               onClick={() => handleLogout()}
             >
               Logout
