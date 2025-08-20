@@ -2,6 +2,7 @@ const userData = [
   {
     id: 1,
     user_name: "shah",
+    password: "nithya123",
     firstName: "Mr",
     lastName: "Shah",
     user_type: "admin",
@@ -22,6 +23,7 @@ const userData = [
   {
     id: 2,
     user_name: "sanjeev",
+    password: "sanjeev123",
     firstName: "sanjeev",
     lastName: "singh",
     user_type: "admin",

@@ -27,7 +27,7 @@ const Login = () => {
 
     const user = userData.find((user) => user.user_name === username);
 
-    if (user && password === "admin") {
+    if (user && user.password === password) {
       Notification.showSuccessMessage("Welcome", "Logged in Successfully");
       const token = "fake-token";
       localStorage.setItem("user_id", user.id);
