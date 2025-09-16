@@ -18,7 +18,11 @@ const Configure = () => {
                 <ul className="flex flex-wrap -mb-px text-sm font-medium text-center" role="tablist">
                     <li className="me-2" role="presentation">
                         <button
-                            className={`inline-block p-4 border-b-2 rounded-t-lg ${activeTab === 'adam' ? 'border-blue-500' : 'hover:border-gray-300'}`}
+                            className={`inline-block px-4 py-3 rounded-t-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-customGreen border-b-2 ${
+                                activeTab === 'adam'
+                                    ? 'border-customGreen text-customGreen dark:text-customGreen font-semibold'
+                                    : 'border-transparent text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:border-gray-300'
+                            }`}
                             onClick={() => handleTabChange('adam')}
                             role="tab"
                         >
@@ -27,7 +31,11 @@ const Configure = () => {
                     </li>
                     <li className="me-2" role="presentation">
                         <button
-                            className={`inline-block p-4 border-b-2 rounded-t-lg ${activeTab === 'zone' ? 'border-blue-500' : 'hover:border-gray-300'}`}
+                            className={`inline-block px-4 py-3 rounded-t-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-customGreen border-b-2 ${
+                                activeTab === 'zone'
+                                    ? 'border-customGreen text-customGreen dark:text-customGreen font-semibold'
+                                    : 'border-transparent text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:border-gray-300'
+                            }`}
                             onClick={() => handleTabChange('zone')}
                             role="tab"
                         >
@@ -36,7 +44,11 @@ const Configure = () => {
                     </li>
                     <li className="me-2" role="presentation">
                         <button
-                            className={`inline-block p-4 border-b-2 rounded-t-lg ${activeTab === 'key' ? 'border-blue-500' : 'hover:border-gray-300'}`}
+                            className={`inline-block px-4 py-3 rounded-t-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-customGreen border-b-2 ${
+                                activeTab === 'key'
+                                    ? 'border-customGreen text-customGreen dark:text-customGreen font-semibold'
+                                    : 'border-transparent text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:border-gray-300'
+                            }`}
                             onClick={() => handleTabChange('key')}
                             role="tab"
                         >
@@ -45,7 +57,11 @@ const Configure = () => {
                     </li>
                     <li className="me-2" role="presentation">
                         <button
-                            className={`inline-block p-4 border-b-2 rounded-t-lg ${activeTab === 'reader' ? 'border-blue-500' : 'hover:border-gray-300'}`}
+                            className={`inline-block px-4 py-3 rounded-t-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-customGreen border-b-2 ${
+                                activeTab === 'reader'
+                                    ? 'border-customGreen text-customGreen dark:text-customGreen font-semibold'
+                                    : 'border-transparent text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:border-gray-300'
+                            }`}
                             onClick={() => handleTabChange('reader')}
                             role="tab"
                         >
