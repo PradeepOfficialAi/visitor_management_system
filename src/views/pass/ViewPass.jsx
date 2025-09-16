@@ -7,10 +7,29 @@ import passlogo from '../../assets/images/passlogo.png';
 
 
 const ViewPass = ({ open, onClose, passData }) => {
-
     const handlePrint = () => {
         window.print();
     };
+
+    // Resolve zone names from either `zone_names` or `zones_allowed` ids
+    const resolveZoneNames = () => {
+        if (Array.isArray(passData?.zone_names)) return passData.zone_names;
+        if (Array.isArray(passData?.zones_allowed)) {
+            try {
+                const db = JSON.parse(localStorage.getItem('vms_db'));
+                const zones = db?.zones || [];
+                const byId = new Map(zones.map(z => [z.id, z.zone_name]));
+                return passData.zones_allowed
+                    .map(id => byId.get(id))
+                    .filter(Boolean);
+            } catch {
+                return [];
+            }
+        }
+        return [];
+    };
+
+    const zoneNames = resolveZoneNames();
 
     return (
         <Dialog
@@ -52,7 +71,7 @@ const ViewPass = ({ open, onClose, passData }) => {
                             <div className="flex-1 flex flex-col space-y-4 p-2">
                                 <InfoItem label="To-Visit" value={passData?.whom_to_visit} />
                                 <InfoItem label="Department" value={passData?.visiting_department} />
-                                <InfoItem label="Zones" value={passData?.zone_names.join(", ")} />
+                                <InfoItem label="Zones" value={zoneNames.length ? zoneNames.join(", ") : '-'} />
                             </div>
                         </div>
                         <div className="flex justify-left p-2">
@@ -66,11 +85,14 @@ const ViewPass = ({ open, onClose, passData }) => {
     );
 };
 
-const InfoItem = ({ label, value }) => (
-    <div className="flex items-center space-x-2">
-        <span className="font-semibold">{label}:</span>
-        <span>{value}</span>
-    </div>
-);
+const InfoItem = ({ label, value }) => {
+    const displayValue = value === null || value === undefined || value === '' ? '-' : value;
+    return (
+        <div className="flex items-center space-x-2">
+            <span className="font-semibold">{label}:</span>
+            <span>{displayValue}</span>
+        </div>
+    );
+};
 
 export default ViewPass;

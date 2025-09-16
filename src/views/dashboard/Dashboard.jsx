@@ -66,13 +66,12 @@ const Dashboard = () => {
 
       // Visitor In Zones Data
       const zonesCount = {};
+      const zoneById = new Map((db.zones || []).map(z => [z.id, z.zone_name]));
       db.passes.forEach(pass => {
-        pass.zones_allowed.forEach(zone => {
-          if (zonesCount[zone.name]) {
-            zonesCount[zone.name]++;
-          } else {
-            zonesCount[zone.name] = 1;
-          }
+        (pass.zones_allowed || []).forEach(z => {
+          const name = typeof z === 'object' && z !== null ? (z.name || z.zone_name) : zoneById.get(z);
+          if (!name) return;
+          zonesCount[name] = (zonesCount[name] || 0) + 1;
         });
       });
       setVisitorInZonesData(zonesCount);
@@ -240,7 +239,7 @@ const Dashboard = () => {
                         </div>
                       </td>
                       <td className="px-4 py-4">{visitor.phone}</td>
-                      <td className="px-6 py-4">{visitor.gov_id_type.replace('_', ' ')}</td>
+                      <td className="px-6 py-4">{(String(visitor.gov_id_type ?? '')).replace('_', ' ') || '-'}</td>
                       <td className="px-6 py-4">{visitor.gov_id_no}</td>
                     </tr>
                   );

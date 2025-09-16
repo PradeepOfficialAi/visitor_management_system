@@ -26,10 +26,28 @@ const Visitor = () => {
     }
   };
 
+  const normalizeVisitor = (v) => ({
+    id: v.id,
+    first_name: v.first_name ?? v.firstName ?? '',
+    last_name: v.last_name ?? v.lastName ?? '',
+    visitor_type: v.visitor_type ?? v.type ?? '',
+    address: v.address ?? '',
+    phone: v.phone ?? v.phoneNumber ?? '',
+    email: v.email ?? '',
+    gov_id_type: v.gov_id_type ?? v.govIdType ?? v.gov_idType ?? v.govId_type ?? '',
+    gov_id_no: v.gov_id_no ?? v.govIdNo ?? v.gov_idNo ?? v.govId_no ?? '',
+    blood_group: v.blood_group ?? v.bloodGroup ?? '',
+    is_blacklisted: v.is_blacklisted ?? v.blacklisted ?? false,
+    image: v.image ?? null,
+    created_on: v.created_on ?? v.createdOn ?? '',
+    updated_on: v.updated_on ?? v.updatedOn ?? '',
+  });
+
   const fetchData = () => {
     setIsLoading(true);
-    const visitors = localStorageManager.getVisitors();
-    setVisitorData(visitors);
+    const visitors = localStorageManager.getVisitors() || [];
+    const normalized = visitors.map(normalizeVisitor);
+    setVisitorData(normalized);
     setIsLoading(false);
   };
 
@@ -42,8 +60,8 @@ const Visitor = () => {
       <Visitors visitors={visitorData} isLoading={isLoading} onActionClick={handleActionClick} />
       {selectedVisitor && (
         <>
-          <VisitorProfile open={viewModalOpen} onClose={() => setViewModalOpen(false)} visitor={selectedVisitor} onActionClick={handleActionClick} />
-          <CreateNewPass open={createNewPassModalOpen} onClose={() => setCreateNewPassModalOpen(false)} visitor={selectedVisitor} fetchData={fetchData} />
+          <VisitorProfile open={viewModalOpen} onClose={() => setViewModalOpen(false)} visitor={normalizeVisitor(selectedVisitor)} onActionClick={handleActionClick} />
+          <CreateNewPass open={createNewPassModalOpen} onClose={() => setCreateNewPassModalOpen(false)} visitor={normalizeVisitor(selectedVisitor)} fetchData={fetchData} />
         </>
       )}
     </div>

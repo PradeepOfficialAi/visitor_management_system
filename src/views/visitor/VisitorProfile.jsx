@@ -34,6 +34,9 @@ const VisitorProfile = ({ open, onClose, visitor, onActionClick }) => {
     setAnchorEl(null);
   };
 
+  // Guard against missing visitor
+  if (!visitor) return null;
+
   return (
     <Dialog open={open} onClose={onClose} fullWidth={true} maxWidth="sm" PaperProps={{ className: "w-1/2 mx-auto" }}>
       <Paper className="p-6 bg-white rounded-lg shadow">
@@ -90,7 +93,7 @@ const VisitorProfile = ({ open, onClose, visitor, onActionClick }) => {
               <InfoItem icon={<HomeIcon color="secondary" />} label="Address" value={visitor.address} />
               <InfoItem icon={<PhoneIcon color="action" />} label="Phone" value={visitor.phone} />
               <InfoItem icon={<EmailIcon color="error" />} label="Email" value={visitor.email} />
-              <InfoItem icon={<BadgeIcon color="info" />} label="Gov ID Type" value={visitor.gov_id_type.replace('_', ' ')} />
+              <InfoItem icon={<BadgeIcon color="info" />} label="Gov ID Type" value={(String(visitor.gov_id_type ?? '')).replace('_', ' ') || '-'} />
               <InfoItem icon={<VpnKeyIcon color="primary" />} label="Gov ID No" value={visitor.gov_id_no} />
               <InfoItem icon={<BloodtypeIcon color="warning" />} label="Blood Group" value={visitor.blood_group} />
               <InfoItem icon={<BlockIcon color={visitor.is_blacklisted ? 'error' : 'success'} />} label="Blacklisted" value={visitor.is_blacklisted ? "Yes" : "No"} />
@@ -102,14 +105,17 @@ const VisitorProfile = ({ open, onClose, visitor, onActionClick }) => {
   );
 };
 
-const InfoItem = ({ icon, label, value }) => (
-  <div className="py-2 flex items-center">
-    {icon}
-    <span className="ml-1 font-bold">{label}</span>
-    <span className="ml-1">:</span>
-    <span className="ml-2">{value}</span>
-  </div>
-);
+const InfoItem = ({ icon, label, value }) => {
+  const displayValue = value === null || value === undefined || value === '' ? '-' : value;
+  return (
+    <div className="py-2 flex items-center">
+      {icon}
+      <span className="ml-1 font-bold">{label}</span>
+      <span className="ml-1">:</span>
+      <span className="ml-2">{displayValue}</span>
+    </div>
+  );
+};
 
 export default VisitorProfile;
 
